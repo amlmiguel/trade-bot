@@ -7,12 +7,25 @@
         const qs = data ? `?${querystring.stringify(data)}` : '';
         const result = await axios({
             method,
-            url: `${process.env.API_URL}${path}`
-
+            url: `${process.env.API_URL}${path}${qs}`
         })
+        return result.data;
 
     }
     catch(err){
         console.log(err);
     }
  }
+
+ async function time(){
+     return publicCall('/v3/time');
+ }
+
+ async function depth(symbol = 'BTCUSDT', limit = 5){
+    return publicCall('/v3/depth', {symbol, limit});
+}
+
+// async function lsr(symbol = 'BTCUSDT', period = '5m'){
+//     return publicCall('/futures/data/globalLongShortAccountRatio', {symbol, period});
+// }
+ module.exports = { time, depth }

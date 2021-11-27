@@ -70,7 +70,7 @@ async function newOrder(symbol, quantity, price, side = 'BUY', type='MARKET'){
     const data = {symbol, side, type, quantity};
 
     if(price) data.price = price;
-    if(type === 'LIMIT') data.timeInForce = 'GTC'; // Até a ordem se cancelada
+    if(type === 'LIMIT') data.timeInForce = 'GTC'; // Até a ordem ser cancelada
 
     return privateCall('/v3/order', data, 'POST');
 }
@@ -87,4 +87,4 @@ async function newOrder(symbol, quantity, price, side = 'BUY', type='MARKET'){
 
 
 
- module.exports = { time, depth, exchangeInfo, accountInfo }
+ module.exports = { time, depth, newOrder }

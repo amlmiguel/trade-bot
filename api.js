@@ -17,15 +17,30 @@
     }
  }
 
+ // Hora
  async function time(){
      return publicCall('/v3/time');
  }
 
+ // Preço
  async function depth(symbol = 'BTCUSDT', limit = 5){
     return publicCall('/v3/depth', {symbol, limit});
 }
 
-// async function lsr(symbol = 'BTCUSDT', period = '5m'){
-//     return publicCall('/futures/data/globalLongShortAccountRatio', {symbol, period});
-// }
- module.exports = { time, depth }
+// Consulta o Long Short Ratio
+async function lsr(symbol = 'BTCUSDT', period = '5m'){
+    return publicCall('/futures/data/globalLongShortAccountRatio', {symbol, period});
+}
+
+// Colocar ordem
+async function newOrder(symbol, quantity, price, side = 'BUY', type='MARKET'){
+    const data = {symbol, side, type, quantity};
+
+    if(price) data.price = price;
+    if(type === 'LIMIT') data.timeInForce = 'GTC'; // Até a ordem se cancelada
+
+    return privateCall('/v3/order', data, 'POST');
+}
+
+
+ module.exports = { time, depth, lsr, newOrder }

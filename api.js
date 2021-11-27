@@ -75,8 +75,6 @@ async function newOrder(symbol, quantity, price, side = 'BUY', type='MARKET'){
     return privateCall('/v3/order', data, 'POST');
 }
 
-
- module.exports = { time, depth, lsr, newOrder }
  async function exchangeInfo(){
     return publicCall('/v3/exchangeInfo');
 }
@@ -87,4 +85,4 @@ async function newOrder(symbol, quantity, price, side = 'BUY', type='MARKET'){
 
 
 
- module.exports = { time, depth, newOrder }
+ module.exports = { time, depth, newOrder, exchangeInfo, accountInfo }

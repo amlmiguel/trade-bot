@@ -21,13 +21,17 @@ setInterval(async () => {
 
         const account = await api.accountInfo();
         const coins = account.balances.filter(b => symbol.indexOf(b.asset) !== -1);
-        console.log(coins)
+
+        console.log('Verificando se tenho grana...');
+        if(sell <= parseInt(coins.find(c => c.asset === 'USDT').free)){
+            consolelog(await api.newOrder(symbol, 0.00001))
+        }
 
     }else if(buy > 62000) {
         console.log('Hora de vender');
     }else{
         console.log('Fica quieto !');
-    }
+    } 
 
 },process.env.CRAWLER_INTERVAL)
 

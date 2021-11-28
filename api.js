@@ -66,12 +66,12 @@ async function lsr(symbol = 'BTCUSDT', period = '5m'){
 }
 
 // Colocar ordem
-async function newOrder(symbol, quantity, price, side = 'BUY', type='MARKET'){
-    const data = {symbol, side, type, quantity};
-
-    if(price) data.price = price;
-    if(type === 'LIMIT') data.timeInForce = 'GTC'; // Até a ordem ser cancelada
-
+async function newOrder(symbol, quantity, price, side = 'BUY', type = 'MARKET') {
+    const data = { symbol, side, type, quantity };
+ 
+    if (price) data.price = parseInt(price);
+    if (type === 'LIMIT') data.timeInForce = 'GTC';
+ 
     return privateCall('/v3/order', data, 'POST');
 }
 
@@ -79,10 +79,10 @@ async function newOrder(symbol, quantity, price, side = 'BUY', type='MARKET'){
     return publicCall('/v3/exchangeInfo');
 }
 
-// async function lsr(symbol = 'BTCUSDT', period = '5m'){
-//     return publicCall('/futures/data/globalLongShortAccountRatio', {symbol, period});
-// }
+async function lsr(symbol = 'BTCUSDT', period = '5m'){
+    return publicCall('/futures/data/globalLongShortAccountRatio', {symbol, period});
+}
 
 
 
- module.exports = { time, depth, newOrder, exchangeInfo, accountInfo }
+ module.exports = { time, depth, newOrder, exchangeInfo, accountInfo, lsr }

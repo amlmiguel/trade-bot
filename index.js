@@ -1,5 +1,7 @@
+const readline = require('readline');
 const api = require('./api');
 const symbol = process.env.SYMBOL;
+const profitability = parseFloat(process.env.PROFITABILITY);
 
 setInterval(async () => {
     let buy, sell;
@@ -16,16 +18,34 @@ setInterval(async () => {
     }
 
 
-    if(sell < 58000) {
+    if(sell < 56000) {
         console.log('Hora de comprar');
 
         const account = await api.accountInfo();
         const coins = account.balances.filter(b => symbol.indexOf(b.asset) !== -1);
+        console.log('POSIÇÃO NA CARTEIRA');
+        console.log(coins);
+
+        const qtdInputada = 0.001;
+        const valorQtd = sell * qtdInputada;
 
         console.log('Verificando se tenho grana...');
-        if(sell <= parseInt(coins.find(c => c.asset === 'USDT').free)){
-            consolelog(await api.newOrder(symbol, 0.00001))
+            
+        if(valorQtd <= parseInt(coins.find(c => c.asset === 'USDT').free)){
+            console.log("Temos grana, vamos comprar (To the moon) !!!");
+            const buyOrder = await api.newOrder(symbol, qtdInputada);
+            console.log(`orderId: ${buyOrder.orderId}`);
+            console.log(`status: ${buyOrder.status}`);
+           
+
+            console.log('Posicionando venda futura...');
+            const price = parseFloat(valorQtd * profitability);
+            console.log(`Vendendo por ${price} (${profitability})`);
+            const sellOrder = await api.newOrder(symbol, qtdInputada, price.toFixed(2), 'SELL', 'LIMIT');
+            console.log(`orderId: ${sellOrder.orderId}`);
+            console.log(`status: ${sellOrder.status}`);      
         }
+        
 
     }else if(buy > 62000) {
         console.log('Hora de vender');
